@@ -2,6 +2,8 @@ import "./App.css";
 import { Button, styled } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { parseFile } from "./Parser.ts";
+import { useState } from "react";
+import ReChart from "./ReChart.tsx";
 
 const VisuallyHiddenInput = styled("input")({
   clipPath: "inset(50%)",
@@ -14,31 +16,41 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-const handleFileChange = (event: FileList | null) => {
-  console.log("file change");
-  if (event && event.length === 1) {
-    console.log("app calls parser");
-    parseFile(event[0]);
-  }
-};
-
 function App() {
+  const [state, setState] = useState(0);
+  const [data, setData] = useState<string[]>([]);
+
+  const handleFileChange = async (event: FileList | null) => {
+    console.log("file change");
+    if (event && event.length === 1) {
+      console.log("app calls parser");
+      setData(await parseFile(event[0]));
+    }
+  };
+
   return (
     <>
-      <Button
-        component="label"
-        role={undefined}
-        variant="contained"
-        tabIndex={-1}
-        startIcon={<CloudUploadIcon />}
-      >
-        Upload files
-        <VisuallyHiddenInput
-          type="file"
-          onChange={(event) => handleFileChange(event.target.files)}
-          multiple
-        />
-      </Button>
+      {state === 0 && (
+        <Button
+          component="label"
+          role={undefined}
+          variant="contained"
+          tabIndex={-1}
+          startIcon={<CloudUploadIcon />}
+        >
+          Upload files
+          <VisuallyHiddenInput
+            type="file"
+            onChange={(event) => {
+              handleFileChange(event.target.files);
+              setState(1);
+            }}
+            multiple
+          />
+        </Button>
+      )}
+
+      {state === 1 && <ReChart />}
     </>
   );
 }
