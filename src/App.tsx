@@ -1,7 +1,7 @@
 import "./App.css";
 import { Button, styled } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { parseFile } from "./Parser.ts";
+import { parseFile } from "./utils/Parser.ts";
 import { useState } from "react";
 import ReChart from "./ReChart.tsx";
 
@@ -16,9 +16,19 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
+export type Transaction = {
+  Date: string;
+  Time: string;
+  Timezone: string;
+  Description: string;
+  Brutto: string;
+  Currency: string;
+  Code?: string;
+};
+
 function App() {
   const [state, setState] = useState(0);
-  const [data, setData] = useState<string[]>([]);
+  const [data, setData] = useState<Transaction[]>();
 
   const handleFileChange = async (event: FileList | null) => {
     console.log("file change");
@@ -50,7 +60,7 @@ function App() {
         </Button>
       )}
 
-      {state === 1 && <ReChart />}
+      {state === 1 && data && <ReChart data={data} />}
     </>
   );
 }

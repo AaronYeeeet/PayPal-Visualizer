@@ -8,6 +8,7 @@ import {
   Bar,
   Rectangle,
 } from "recharts";
+import { Transaction } from "./App.tsx";
 const data = [
   { name: "January", uv: 400, pv: 2400, amt: 2400 },
   { name: "February", uv: 300, pv: 1398, amt: 2210 },
@@ -23,7 +24,8 @@ const data = [
   { name: "December", uv: 780, pv: 5200, amt: 2800 },
 ];
 
-function ReChart() {
+// @ts-ignore
+function ReChart({ inputData }: { data: Transaction[] }) {
   return (
     <BarChart
       width={500}
