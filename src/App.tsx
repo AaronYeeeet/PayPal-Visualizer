@@ -17,13 +17,13 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 export type Transaction = {
-  Date: string;
-  Time: string;
-  Timezone: string;
-  Description: string;
+  Datum: string;
+  Uhrzeit: string;
+  Zeitzone: string;
+  Beschreibung: string;
+  Name: string;
   Brutto: string;
-  Currency: string;
-  Code?: string;
+  Währung: string;
 };
 
 function App() {
