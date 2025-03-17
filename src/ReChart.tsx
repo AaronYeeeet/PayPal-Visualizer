@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid2";
 
 import MonthlySpent from "./Charts/MonthlySpent.tsx";
 import { Box } from "@mui/material";
+import RecepientSpent from "./Charts/RecepientSpent.tsx";
 
 function ReChart({ data }: { data: Transaction[] }) {
   const gridSize = 6;
@@ -13,7 +14,7 @@ function ReChart({ data }: { data: Transaction[] }) {
           <MonthlySpent data={data} />
         </Grid>
         <Grid size={gridSize}>
-          <MonthlySpent data={data} />
+          <RecepientSpent data={data} />
         </Grid>
         <Grid size={gridSize}>
           <MonthlySpent data={data} />

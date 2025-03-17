@@ -12,21 +12,7 @@ import { Transaction } from "../App.tsx";
 import { calculateSumPerMonth } from "../utils/prepareData.ts";
 import { useMemo } from "react";
 
-// @ts-ignore
-const testData = [
-  { name: "01", uv: 400 },
-  { name: "02", uv: 300 },
-  { name: "03", uv: 200 },
-  { name: "04", uv: 278 },
-  { name: "05", uv: 189 },
-  { name: "06", uv: 239 },
-  { name: "07", uv: 349 },
-  { name: "08", uv: 500 },
-  { name: "09", uv: 150 },
-  { name: "10", uv: 280 },
-  { name: "11", uv: 380 },
-  { name: "12", uv: 780 },
-];
+
 
 function formatData(data: Transaction[]): { name: string; uv: number }[] {
   const chartData: { name: string; uv: number }[] = [];
@@ -35,7 +21,7 @@ function formatData(data: Transaction[]): { name: string; uv: number }[] {
       name: (i + 1).toString().padStart(2, "0"),
       uv: calculateSumPerMonth(data, i + 1),
     });
-    console.log("chartData", chartData);
+   // console.log("chartData", chartData);
   }
   return chartData;
 }
