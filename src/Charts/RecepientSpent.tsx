@@ -106,14 +106,14 @@ export default function RecepientSpent({
   }, []);
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
+    <ResponsiveContainer width="100%" height={500}>
       <PieChart>
         <Pie
           activeIndex={activeIndex}
           activeShape={renderActiveShape}
           data={chartData}
           cx={250}
-          cy={150}
+          cy={250}
           innerRadius={100}
           outerRadius={130}
           fill="#8884d8"

@@ -55,6 +55,7 @@ export function spenditureByRecepient(
       }
       if (count > pieCount && !deleted) {
         deleted = true;
+        console.log(recipient,value);
         other -= value;
         spentPerRecipient.delete(recipient);
       }
