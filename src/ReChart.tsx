@@ -12,10 +12,34 @@ import RecepientSpent from "./Charts/RecepientSpent.tsx";
 import { useState } from "react";
 
 function ReChart({ data }: { data: Transaction[] }) {
+    const dataExFF = data.filter((transaction) => transaction.Beschreibung !== "Handyzahlung");
+    console.log(dataExFF);
+    const dataALl = data;
+    const [filteredData, setData] = useState(data);
   const gridSize = 6;
   const [excludeOthers, setExcludeOthers] = useState(false);
   return (
     <Box sx={{ flexGrow: 1 }}>
+        <FormControlLabel
+            control={
+                <Switch
+                    onChange={(event) => setData(event.target.checked ? dataExFF : dataALl)}
+                    sx={{
+                        "& .MuiSwitch-switchBase": {
+                            color: "#9e9e9e", // Unchecked color
+                            "&.Mui-checked": {
+                                color: "#65C466", // Checked color
+                                "& + .MuiSwitch-track": {
+                                    backgroundColor: "#65C466",
+                                },
+                            },
+                        },
+                    }}
+                />
+            }
+            label="Exclude Friends & Family"
+        />
+
       <Grid
         container
         rowSpacing={5}
@@ -35,7 +59,7 @@ function ReChart({ data }: { data: Transaction[] }) {
       >
         <Grid size={gridSize} sx={{ overflow: "visible" }}>
           <Typography variant="h6">Spenditure per Month</Typography>
-          <MonthlySpent data={data} />
+          <MonthlySpent data={filteredData} />
         </Grid>
 
         <Grid size={gridSize}>
@@ -60,14 +84,14 @@ function ReChart({ data }: { data: Transaction[] }) {
               }
               label="Exclude Other"
             />
-            <RecepientSpent data={data} excludeOthers={excludeOthers} />
+            <RecepientSpent data={filteredData} excludeOthers={excludeOthers} />
           </Stack>
         </Grid>
         <Grid size={gridSize}>
-          <MonthlySpent data={data} />
+          <MonthlySpent data={filteredData} />
         </Grid>
         <Grid size={gridSize}>
-          <MonthlySpent data={data} />
+          <MonthlySpent data={filteredData} />
         </Grid>
       </Grid>
     </Box>

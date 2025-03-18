@@ -56,8 +56,6 @@ export function spenditureByRecepient(
       if (count > 6 && !deleted) {
         deleted = true;
         other -= value;
-        console.log("other", other);
-        console.log(recipient);
         spentPerRecipient.delete(recipient);
       }
     });
