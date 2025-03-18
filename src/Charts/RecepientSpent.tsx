@@ -92,12 +92,13 @@ const renderActiveShape = (props: any) => {
 
 export default function RecepientSpent({
   data,
-  excludeOthers,
+  excludeOthers, pieCount
+
 }: {
   data: Transaction[];
-  excludeOthers: boolean;
+  excludeOthers: boolean; pieCount: number;
 }) {
-  const chartData = spenditureByRecepient(data, excludeOthers);
+  const chartData = spenditureByRecepient(data, excludeOthers, pieCount);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const onPieEnter = useCallback((_: any, index: number) => {

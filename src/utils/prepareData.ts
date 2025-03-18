@@ -29,7 +29,7 @@ export function calculateSumPerMonth(
 
 export function spenditureByRecepient(
   data: Transaction[],
-  excludeOthers: boolean,
+  excludeOthers: boolean, pieCount: number
 ): { name: string; EUR: number }[] {
   let spentPerRecipient: Map<string, number> = new Map();
   let other = 0;
@@ -53,7 +53,7 @@ export function spenditureByRecepient(
       if (value < compareValue) {
         count++;
       }
-      if (count > 6 && !deleted) {
+      if (count > pieCount && !deleted) {
         deleted = true;
         other -= value;
         spentPerRecipient.delete(recipient);
