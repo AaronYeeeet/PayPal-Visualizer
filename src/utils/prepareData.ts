@@ -25,6 +25,87 @@ export function calculateSumPerMonth(
   return sum;
 }
 
+export function sumPerMonthByRecipient(
+  data: Transaction[],
+  topRecipients: number = 5,
+): { month: string; [key: string]: number | string }[] {
+  const monthlyData = new Map<string, Map<string, number>>();
+
+  // get amount per month per recipient
+  data.forEach((transaction) => {
+    const amount = parseFloat(transaction.Brutto);
+    if (
+      transaction.Währung === "EUR" &&
+      amount < 0 &&
+      transaction.Name &&
+      transaction.Name.trim() !== ""
+    ) {
+      const month = transaction.Datum.split(".")[1];
+      const recipient = transaction.Name;
+      const positiveAmount = -amount;
+
+      if (!monthlyData.has(month)) {
+        monthlyData.set(month, new Map());
+      }
+
+      const recipientMap = monthlyData.get(month)!;
+      recipientMap.set(
+        recipient,
+        (recipientMap.get(recipient) || 0) + positiveAmount,
+      );
+    }
+  });
+
+  // Finde Top-Empfänger über alle Monate
+  const totalPerRecipient = new Map<string, number>();
+  monthlyData.forEach((recipientMap) => {
+    recipientMap.forEach((amount, recipient) => {
+      totalPerRecipient.set(
+        recipient,
+        (totalPerRecipient.get(recipient) || 0) + amount,
+      );
+    });
+  });
+
+  const topRecipientNames = Array.from(totalPerRecipient.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, topRecipients)
+    .map(([name]) => name);
+
+  // format for rechart with "Other" category
+  const result: { month: string; [key: string]: number | string }[] = [];
+
+  monthlyData.forEach((recipientMap, month) => {
+    const monthData: { month: string; [key: string]: number | string } = {
+      month: month,
+    };
+
+    // Initialisiere alle Top-Empfänger mit 0
+    topRecipientNames.forEach((recipient) => {
+      monthData[recipient] = 0;
+    });
+
+    let otherSum = 0;
+
+    recipientMap.forEach((amount, recipient) => {
+      if (topRecipientNames.includes(recipient)) {
+        monthData[recipient] = amount;
+      } else {
+        otherSum += amount;
+      }
+    });
+
+    // Füge "Other" hinzu, wenn es einen Wert gibt
+    if (otherSum > 0) {
+      monthData["Other"] = otherSum;
+    }
+
+    result.push(monthData);
+  });
+
+  return result.sort((a, b) => a.month.localeCompare(b.month));
+}
+
 export function spenditureByRecepient(
   data: Transaction[],
   excludeOthers: boolean,

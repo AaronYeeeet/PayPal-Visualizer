@@ -14,17 +14,24 @@ import {
 } from "@mui/material";
 import RecepientSpent from "./Charts/RecepientSpent.tsx";
 import { useState } from "react";
+import MonthlyRecipientSpent from "./Charts/MonthlyRecipientSpent.tsx";
 
 function ReChart({ data }: { data: Transaction[] }) {
+  const defaultData = data.filter(
+    (transaction) =>
+      transaction.Beschreibung !== "Von Nutzer eingeleitete Abbuchung",
+  );
   const dataExFF = data.filter(
     (transaction) =>
-      !["Handyzahlung", "Allgemeine Zahlung"].includes(
-        transaction.Beschreibung,
-      ),
+      ![
+        "Handyzahlung",
+        "Allgemeine Zahlung",
+        "Von Nutzer eingeleitete Abbuchung",
+      ].includes(transaction.Beschreibung),
   );
   console.log(dataExFF);
   const dataALl = data;
-  const [filteredData, setData] = useState(data);
+  const [filteredData, setData] = useState(defaultData);
   const gridSize = 6;
   const [excludeOthers, setExcludeOthers] = useState(false);
   const [pieCount, setPieCount] = useState(6);
@@ -177,7 +184,10 @@ function ReChart({ data }: { data: Transaction[] }) {
         </Grid>
         {/*  bottom placeholders */}
         <Grid size={gridSize}>
-          <MonthlySpent data={filteredData} />
+          <Typography variant="h6">
+            Spenditure per Month by Recipient
+          </Typography>
+          <MonthlyRecipientSpent data={filteredData} topRecipients={5} />
         </Grid>
         <Grid size={gridSize}>
           <MonthlySpent data={filteredData} />
