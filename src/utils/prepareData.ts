@@ -19,8 +19,6 @@ export function calculateSumPerMonth(
   let sum = 0;
   transactionsWithinMonth.forEach((transaction) => {
     if (transaction.Währung === "EUR" && parseFloat(transaction.Brutto) < 0) {
-      //console.log("Name", transaction.Name)
-      //console.log("Brutto", transaction.Brutto)
       sum -= parseFloat(transaction.Brutto);
     }
   });
@@ -29,44 +27,61 @@ export function calculateSumPerMonth(
 
 export function spenditureByRecepient(
   data: Transaction[],
-  excludeOthers: boolean, pieCount: number
+  excludeOthers: boolean,
+  pieCount: number,
 ): { name: string; EUR: number }[] {
   let spentPerRecipient: Map<string, number> = new Map();
   let other = 0;
 
+  // Calculate total spent per recipient (only expenses)
   data.forEach((element) => {
-    if (spentPerRecipient.has(element.Name)) {
-      spentPerRecipient.set(
-        element.Name,
-        -parseFloat(element.Brutto) +
-          -(spentPerRecipient.get(element.Name) || 0),
-      );
-    } else {
-      spentPerRecipient.set(element.Name, -parseFloat(element.Brutto));
+    const amount = parseFloat(element.Brutto);
+    if (
+      element.Währung === "EUR" && // TODO add more
+      amount < 0 &&
+      element.Name &&
+      element.Name.trim() !== ""
+    ) {
+      const positiveAmount = -amount; // Convert to positive for display
+      if (spentPerRecipient.has(element.Name)) {
+        spentPerRecipient.set(
+          element.Name,
+          spentPerRecipient.get(element.Name)! + positiveAmount,
+        );
+      } else {
+        spentPerRecipient.set(element.Name, positiveAmount);
+      }
     }
   });
 
-  spentPerRecipient.forEach((value, recipient) => {
-    let count = 0;
-    let deleted = false;
-    spentPerRecipient.forEach((compareValue) => {
-      if (value < compareValue) {
-        count++;
-      }
-      if (count > pieCount && !deleted) {
-        deleted = true;
-        console.log(recipient,value);
-        other -= value;
-        spentPerRecipient.delete(recipient);
-      }
-    });
+  // filter top pieCount recipients, rest to "Other"
+  let sortedEntries = Array.from(spentPerRecipient.entries()).sort(
+    (a, b) => b[1] - a[1],
+  );
+  let topRecipients = sortedEntries.slice(0, pieCount);
+  let otherRecipients = sortedEntries.slice(pieCount);
+
+  // Clear the map and add back only top recipients
+  spentPerRecipient.clear();
+  topRecipients.forEach(([recipient, value]) => {
+    spentPerRecipient.set(recipient, value);
   });
 
+  // Sum up the "Other" category
+  otherRecipients.forEach(([recipient, value]) => {
+    console.log(recipient, value);
+    other += value;
+  });
+
+  // prepare result map -> array
   let result: { name: string; EUR: number }[] = [];
   spentPerRecipient.forEach((value, recipient) => {
     result.push({ name: recipient, EUR: value });
   });
-  if (!excludeOthers) result.push({ name: "Other", EUR: other });
+  // add other category depending on toggle
+  if (!excludeOthers && other > 0) {
+    result.push({ name: "Other", EUR: other });
+  }
   console.log("pie chart:", result);
   return result;
 }
