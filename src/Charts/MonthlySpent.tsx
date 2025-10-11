@@ -47,8 +47,8 @@ function MonthlySpent({ data }: { data: Transaction[] }) {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
+        <XAxis dataKey="name" stroke="lightgrey" />
+        <YAxis stroke="lightgrey" />
         <Tooltip />
         <Legend />
         <Bar

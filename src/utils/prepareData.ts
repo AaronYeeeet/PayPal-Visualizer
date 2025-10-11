@@ -8,7 +8,6 @@ function isWithinMonth(date: string, month: number): boolean {
   return date.split(".")[1] === monthString;
 }
 
-//TODO skip payments to own account
 export function calculateSumPerMonth(
   data: Transaction[],
   month: number,

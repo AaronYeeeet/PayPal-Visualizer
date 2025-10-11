@@ -4,7 +4,7 @@ import {
   BarChart,
   CartesianGrid,
   Legend,
-  Rectangle, // Import Rectangle for the activeBar effect
+  Rectangle,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -13,7 +13,6 @@ import {
 import { sumPerMonthByRecipient } from "../utils/prepareData.ts";
 import { useMemo } from "react";
 
-// Color palette for the different recipients in the stacked chart.
 const COLORS = [
   "#8884d8",
   "#82ca9d",
@@ -23,13 +22,6 @@ const COLORS = [
   "#66c2a5",
 ];
 
-/**
- * Prepares and formats data for the stacked bar chart.
- * This function ensures that data for all 12 months is returned, even if there were no transactions.
- * @param {Transaction[]} data - The raw transaction data.
- * @param {number} topRecipients - The number of top recipients to include.
- * @returns {object} An object containing the formatted chart data and the list of recipient names.
- */
 function formatData(data: Transaction[], topRecipients: number) {
   const sparseData = sumPerMonthByRecipient(data, topRecipients);
   const recipients =
@@ -54,10 +46,6 @@ function formatData(data: Transaction[], topRecipients: number) {
   return { finalChartData, recipients };
 }
 
-/**
- * A React component that displays a stacked bar chart of monthly spending
- * broken down by the top N recipients, styled similarly to MonthlySpent.
- */
 function MonthlyRecipientSpent({
   data,
   topRecipients = 5,
@@ -71,13 +59,11 @@ function MonthlyRecipientSpent({
   );
 
   return (
-    // Use the same ResponsiveContainer styling as MonthlySpent
     <ResponsiveContainer
       width="100%"
       height={350}
       style={{ overflow: "visible" }}
     >
-      {/* Use the same BarChart props (width, height, margin) as MonthlySpent */}
       <BarChart
         width={700}
         height={300}
@@ -90,8 +76,8 @@ function MonthlyRecipientSpent({
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="month" stroke="white" />
-        <YAxis stroke="white" />
+        <XAxis dataKey="month" stroke="lightgrey" />
+        <YAxis stroke="lightgrey" />
         <Tooltip
           contentStyle={{ backgroundColor: "#333", border: "1px solid #666" }}
         />
