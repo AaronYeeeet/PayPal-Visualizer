@@ -59,11 +59,7 @@ function MonthlyRecipientSpent({
   );
 
   return (
-    <ResponsiveContainer
-      width="100%"
-      height={350}
-      style={{ overflow: "visible" }}
-    >
+    <ResponsiveContainer width="100%" height={600} style={{ margin: "0 auto" }}>
       <BarChart
         width={700}
         height={300}

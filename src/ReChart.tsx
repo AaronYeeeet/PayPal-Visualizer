@@ -52,8 +52,8 @@ function ReChart({ data }: { data: Transaction[] }) {
 
       <Grid
         container
-        rowSpacing={5}
-        columnSpacing={10}
+        rowSpacing={3}
+        columnSpacing={0}
         sx={{
           overflow: "visible",
           "--Grid-borderWidth": "1px",
@@ -89,6 +89,9 @@ function ReChart({ data }: { data: Transaction[] }) {
           <MonthlySpent data={filteredData} />
         </Grid>
         <Grid size={gridSize}>
+          <Typography variant="h6">
+            Spenditure per Month by Recipient
+          </Typography>
           <MonthlySpent data={filteredData} />
         </Grid>
       </Grid>

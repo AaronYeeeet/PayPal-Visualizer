@@ -32,12 +32,12 @@ function MonthlySpent({ data }: { data: Transaction[] }) {
   return (
     <ResponsiveContainer
       width="100%"
-      height={350}
+      height={600}
       style={{ overflow: "visible" }}
     >
       <BarChart
         width={700}
-        height={300}
+        height={600}
         data={chartData}
         margin={{
           top: 5,

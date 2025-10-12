@@ -43,7 +43,7 @@ const TopRight = ({
     <Grid size={gridSize}>
       <Stack spacing={2} alignItems="center">
         <Typography variant="h6">Spenditure per Recepient</Typography>
-        <Stack direction={"row"}>
+        <Stack direction={"row"} justifyContent="center" alignItems="center">
           <FormControlLabel
             control={
               <Switch
@@ -142,7 +142,6 @@ const TopRight = ({
               borderColor: "#333",
               "&.Mui-selected": {
                 backgroundColor: "mediumpurple",
-                justifyContent: "flex-start",
                 color: "white",
               },
             },

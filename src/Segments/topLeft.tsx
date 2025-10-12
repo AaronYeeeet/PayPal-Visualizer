@@ -26,7 +26,7 @@ const TopLeft = ({ gridSize, filteredData }: TopLeftProps) => {
 
   return (
     <Grid size={gridSize} sx={{ overflow: "visible" }}>
-      <Stack spacing={2}>
+      <Stack spacing={2} alignItems="center">
         <Typography variant="h6">Spenditure per Month</Typography>
         <Stack direction={"row"} spacing={2} alignItems="center">
           <FormControlLabel
