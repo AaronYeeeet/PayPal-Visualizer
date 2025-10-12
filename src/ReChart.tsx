@@ -7,6 +7,7 @@ import MidLeft from "./Segments/MidLeft.tsx";
 import TopRight from "./Segments/TopRight.tsx";
 import TopLeft from "./Segments/TopLeft.tsx";
 import MidRight from "./Segments/MidRight.tsx";
+import { categorizeTransactions } from "./utils/MistralApi.ts";
 
 function ReChart({ data }: { data: Transaction[] }) {
   const defaultData = data.filter(
@@ -28,6 +29,16 @@ function ReChart({ data }: { data: Transaction[] }) {
   const [excludeOthers, setExcludeOthers] = useState(false);
   const [pieCount, setPieCount] = useState(6);
   const [showAll, setShowAll] = useState(false);
+
+  async function handleTestCategorization() {
+    try {
+      const result = await categorizeTransactions(filteredData);
+      console.log("Categorization result:", result);
+    } catch (error) {
+      console.error("Error during categorization:", error);
+    }
+  }
+
   return (
     <Box
       sx={{
@@ -91,6 +102,7 @@ function ReChart({ data }: { data: Transaction[] }) {
         <MidLeft gridSize={gridSize} filteredData={filteredData} />
         <MidRight gridSize={gridSize} filteredData={filteredData} />
       </Grid>
+      <button onClick={handleTestCategorization}>Test Categorization</button>
     </Box>
   );
 }
