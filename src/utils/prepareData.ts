@@ -241,3 +241,53 @@ export function transactionPerWeekdayData(
     };
   });
 }
+
+export function spentPerHour(
+  transactions: Transaction[],
+): { hour: string; value: number }[] {
+  const hourMap = new Map<number, number>();
+
+  for (let i = 0; i < 24; i++) {
+    hourMap.set(i, 0);
+  }
+
+  transactions.forEach((transaction) => {
+    const amount = parseFloat(transaction.Brutto);
+    if (transaction.Währung === "EUR" && amount < 0) {
+      const [hours] = transaction.Uhrzeit.split(":");
+      const hour = parseInt(hours);
+
+      hourMap.set(hour, hourMap.get(hour)! - amount);
+    }
+  });
+
+  return Array.from(hourMap.entries()).map(([hour, amount]) => ({
+    hour: (hour + 1).toString().padStart(2, "0"),
+    value: parseFloat(amount.toFixed(2)),
+  }));
+}
+
+export function countPerHour(
+  transactions: Transaction[],
+): { hour: string; value: number }[] {
+  const hourMap = new Map<number, number>();
+
+  for (let i = 0; i < 24; i++) {
+    hourMap.set(i, 0);
+  }
+
+  transactions.forEach((transaction) => {
+    const amount = parseFloat(transaction.Brutto);
+    if (transaction.Währung === "EUR" && amount < 0) {
+      const [hours] = transaction.Uhrzeit.split(":");
+      const hour = parseInt(hours);
+
+      hourMap.set(hour, hourMap.get(hour)! + 1);
+    }
+  });
+
+  return Array.from(hourMap.entries()).map(([hour, count]) => ({
+    hour: (hour + 1).toString().padStart(2, "0"),
+    value: count,
+  }));
+}

@@ -1,12 +1,12 @@
 import { Transaction } from "./App.tsx";
 import Grid from "@mui/material/Grid2";
-import MonthlySpent from "./Charts/MonthlySpent.tsx";
-import { Box, FormControlLabel, Switch, Typography } from "@mui/material";
+import { Box, FormControlLabel, Switch } from "@mui/material";
 import { useState } from "react";
 
 import MidLeft from "./Segments/MidLeft.tsx";
 import TopRight from "./Segments/TopRight.tsx";
 import TopLeft from "./Segments/TopLeft.tsx";
+import MidRight from "./Segments/MidRight.tsx";
 
 function ReChart({ data }: { data: Transaction[] }) {
   const defaultData = data.filter(
@@ -89,12 +89,7 @@ function ReChart({ data }: { data: Transaction[] }) {
           setShowAll={setShowAll}
         />
         <MidLeft gridSize={gridSize} filteredData={filteredData} />
-        <Grid size={gridSize}>
-          <Typography variant="h6">
-            Spenditure per Month by Recipient
-          </Typography>
-          <MonthlySpent data={filteredData} />
-        </Grid>
+        <MidRight gridSize={gridSize} filteredData={filteredData} />
       </Grid>
     </Box>
   );
