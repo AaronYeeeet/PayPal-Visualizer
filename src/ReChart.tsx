@@ -3,8 +3,10 @@ import Grid from "@mui/material/Grid2";
 import MonthlySpent from "./Charts/MonthlySpent.tsx";
 import { Box, FormControlLabel, Switch, Typography } from "@mui/material";
 import { useState } from "react";
-import TopRight from "./Segments/topRight.tsx";
-import TopLeft from "./Segments/topLeft.tsx";
+
+import MidLeft from "./Segments/MidLeft.tsx";
+import TopRight from "./Segments/TopRight.tsx";
+import TopLeft from "./Segments/TopLeft.tsx";
 
 function ReChart({ data }: { data: Transaction[] }) {
   const defaultData = data.filter(
@@ -27,7 +29,15 @@ function ReChart({ data }: { data: Transaction[] }) {
   const [pieCount, setPieCount] = useState(6);
   const [showAll, setShowAll] = useState(false);
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        width: 1400,
+        padding: 0,
+        margin: 0,
+        boxSizing: "border-box",
+      }}
+    >
       <FormControlLabel
         control={
           <Switch
@@ -67,9 +77,7 @@ function ReChart({ data }: { data: Transaction[] }) {
           },
         }}
       >
-        {/*  top left spent per month */}
         <TopLeft gridSize={gridSize} filteredData={filteredData} />
-        {/*  top right spent per recipient */}
         <TopRight
           gridSize={gridSize}
           filteredData={filteredData}
@@ -80,14 +88,7 @@ function ReChart({ data }: { data: Transaction[] }) {
           showAll={showAll}
           setShowAll={setShowAll}
         />
-
-        {/*  bottom placeholders */}
-        <Grid size={gridSize}>
-          <Typography variant="h6">
-            Spenditure per Month by Recipient
-          </Typography>
-          <MonthlySpent data={filteredData} />
-        </Grid>
+        <MidLeft gridSize={gridSize} filteredData={filteredData} />
         <Grid size={gridSize}>
           <Typography variant="h6">
             Spenditure per Month by Recipient

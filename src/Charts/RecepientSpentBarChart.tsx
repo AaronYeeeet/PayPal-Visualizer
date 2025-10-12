@@ -66,8 +66,17 @@ export default function RecipientSpentBarChart({
         margin={{ top: 5, right: 30, left: 10, bottom: 5 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis type="number" />
-        <YAxis type="category" dataKey="name" width={90} />
+        <XAxis type="number" tick={{ fill: "lightgrey" }} />
+        <YAxis
+          type="category"
+          dataKey="name"
+          width={150}
+          tick={({ x, y, payload }) => (
+            <text x={x} y={y} textAnchor="end" fontSize={12} fill="lightgrey">
+              {payload.value.replace(/\s+/g, "-")}
+            </text>
+          )}
+        />
         <Tooltip
           cursor={{ fill: "rgba(138, 132, 216, 0.3)" }}
           content={<CustomTooltip />}

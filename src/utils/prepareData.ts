@@ -165,3 +165,79 @@ export function spenditureByRecepient(
   console.log("pie chart:", result);
   return result;
 }
+
+export function spentPerWeekday(
+  data: Transaction[],
+): { weekday: string; EUR: number }[] {
+  const weekdayMap = new Map<string, number>();
+  const weekdays = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+
+  weekdays.forEach((day) => weekdayMap.set(day, 0));
+
+  data.forEach((transaction) => {
+    const amount = parseFloat(transaction.Brutto);
+    if (transaction.Währung === "EUR" && amount < 0) {
+      const [day, month, year] = transaction.Datum.split(".");
+      const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+      const weekdayIndex = date.getDay();
+      const weekdayName = weekdays[weekdayIndex === 0 ? 6 : weekdayIndex - 1];
+
+      weekdayMap.set(weekdayName, weekdayMap.get(weekdayName)! - amount);
+    }
+  });
+
+  return weekdays.map((day) => ({
+    weekday: day,
+    EUR: parseFloat(weekdayMap.get(day)!.toFixed(2)),
+  }));
+}
+
+export function transactionPerWeekdayData(
+  transactions: Transaction[],
+  showCount: boolean,
+): { weekday: string; value: number }[] {
+  const weekdayMap = new Map<string, { amount: number; count: number }>();
+  const weekdays = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+
+  weekdays.forEach((day) => weekdayMap.set(day, { amount: 0, count: 0 }));
+
+  transactions.forEach((transaction) => {
+    const amount = parseFloat(transaction.Brutto);
+    if (transaction.Währung === "EUR" && amount < 0) {
+      const [day, month, year] = transaction.Datum.split(".");
+      const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+      const weekdayIndex = date.getDay();
+      const weekdayName = weekdays[weekdayIndex === 0 ? 6 : weekdayIndex - 1];
+
+      const current = weekdayMap.get(weekdayName)!;
+      weekdayMap.set(weekdayName, {
+        amount: current.amount - amount,
+        count: current.count + 1,
+      });
+    }
+  });
+
+  return weekdays.map((day) => {
+    const data = weekdayMap.get(day)!;
+    return {
+      weekday: day,
+      value: showCount ? data.count : parseFloat(data.amount.toFixed(2)),
+    };
+  });
+}
