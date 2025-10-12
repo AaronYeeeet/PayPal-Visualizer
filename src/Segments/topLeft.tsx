@@ -106,6 +106,7 @@ const TopLeft = ({ gridSize, filteredData }: TopLeftProps) => {
             control={
               <Checkbox
                 checked={showAll}
+                disabled={!showPerRecipient}
                 onChange={(event) => setShowAll(event.target.checked)}
                 sx={{
                   color: "#9e9e9e",
