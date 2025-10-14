@@ -1,12 +1,13 @@
 import { Transaction } from "./App.tsx";
 import Grid from "@mui/material/Grid2";
-import { Box, FormControlLabel, Switch } from "@mui/material";
+import { Box, FormControlLabel, Switch, Button } from "@mui/material";
 import { useState } from "react";
 
 import MidLeft from "./Segments/MidLeft.tsx";
 import TopRight from "./Segments/TopRight.tsx";
 import TopLeft from "./Segments/TopLeft.tsx";
 import MidRight from "./Segments/MidRight.tsx";
+import BottomAI from "./Segments/BottomAI.tsx";
 import { categorizeTransactions } from "./utils/MistralApi.ts";
 
 function ReChart({ data }: { data: Transaction[] }) {
@@ -29,13 +30,24 @@ function ReChart({ data }: { data: Transaction[] }) {
   const [excludeOthers, setExcludeOthers] = useState(false);
   const [pieCount, setPieCount] = useState(6);
   const [showAll, setShowAll] = useState(false);
+  const [categorization, setCategorization] = useState<{
+    categories: string[];
+    classified: { index: number; name: string; category: string }[];
+  } | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showBottomAI, setShowBottomAI] = useState(false);
 
-  async function handleTestCategorization() {
+  async function handleCategorization() {
+    setIsLoading(true);
+    setShowBottomAI(true);
     try {
       const result = await categorizeTransactions(filteredData);
       console.log("Categorization result:", result);
+      setCategorization(result);
     } catch (error) {
       console.error("Error during categorization:", error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -57,9 +69,9 @@ function ReChart({ data }: { data: Transaction[] }) {
             }
             sx={{
               "& .MuiSwitch-switchBase": {
-                color: "#9e9e9e", // Unchecked color
+                color: "#9e9e9e",
                 "&.Mui-checked": {
-                  color: "#65C466", // Checked color
+                  color: "#65C466",
                   "& + .MuiSwitch-track": {
                     backgroundColor: "#65C466",
                   },
@@ -101,8 +113,24 @@ function ReChart({ data }: { data: Transaction[] }) {
         />
         <MidLeft gridSize={gridSize} filteredData={filteredData} />
         <MidRight gridSize={gridSize} filteredData={filteredData} />
+
+        {showBottomAI && (
+          <BottomAI
+            gridSize={12}
+            categorization={categorization}
+            isLoading={isLoading}
+            transactions={filteredData}
+          />
+        )}
       </Grid>
-      <button onClick={handleTestCategorization}>Test Categorization</button>
+
+      <Button
+        variant="contained"
+        onClick={handleCategorization}
+        sx={{ marginTop: 2 }}
+      >
+        Yeet
+      </Button>
     </Box>
   );
 }

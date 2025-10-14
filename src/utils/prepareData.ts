@@ -30,7 +30,6 @@ export function sumPerMonthByRecipient(
 ): { month: string; [key: string]: number | string }[] {
   const monthlyData = new Map<string, Map<string, number>>();
 
-  // get amount per month per recipient
   data.forEach((transaction) => {
     const amount = parseFloat(transaction.Brutto);
     if (
@@ -55,7 +54,6 @@ export function sumPerMonthByRecipient(
     }
   });
 
-  // Finde Top-Empfänger über alle Monate
   const totalPerRecipient = new Map<string, number>();
   monthlyData.forEach((recipientMap) => {
     recipientMap.forEach((amount, recipient) => {
@@ -71,7 +69,6 @@ export function sumPerMonthByRecipient(
     .slice(0, topRecipients)
     .map(([name]) => name);
 
-  // format for rechart with "Other" category
   const result: { month: string; [key: string]: number | string }[] = [];
 
   monthlyData.forEach((recipientMap, month) => {
@@ -79,7 +76,6 @@ export function sumPerMonthByRecipient(
       month: month,
     };
 
-    // Initialisiere alle Top-Empfänger mit 0
     topRecipientNames.forEach((recipient) => {
       monthData[recipient] = 0;
     });
@@ -94,7 +90,6 @@ export function sumPerMonthByRecipient(
       }
     });
 
-    // Füge "Other" hinzu, wenn es einen Wert gibt
     if (otherSum > 0) {
       monthData["Other"] = otherSum;
     }
@@ -290,4 +285,77 @@ export function countPerHour(
     hour: (hour + 1).toString().padStart(2, "0"),
     value: count,
   }));
+}
+
+interface CategorizationResult {
+  categories: string[];
+  classified: {
+    index: number;
+    name: string;
+    category: string;
+  }[];
+}
+
+export function spentPerCategory(
+  categorization: CategorizationResult,
+  transactions: Transaction[],
+  showCount: boolean,
+): { category: string; value: number }[] {
+  const categoryMap = new Map<string, { amount: number; count: number }>();
+
+  categorization.categories.forEach((category) => {
+    categoryMap.set(category, { amount: 0, count: 0 });
+  });
+
+  const transactionAmounts = transactions
+    .filter((transaction) => parseFloat(transaction.Brutto) < 0)
+    .map((transaction, index) => ({
+      index,
+      amount: -parseFloat(transaction.Brutto),
+    }));
+
+  categorization.classified.forEach((item) => {
+    const current = categoryMap.get(item.category);
+    const transactionData = transactionAmounts[item.index];
+
+    if (current && transactionData) {
+      categoryMap.set(item.category, {
+        amount: current.amount + transactionData.amount,
+        count: current.count + 1,
+      });
+    }
+  });
+
+  return Array.from(categoryMap.entries())
+    .map(([category, data]) => ({
+      category,
+      value: showCount ? data.count : parseFloat(data.amount.toFixed(2)),
+    }))
+    .filter((item) => item.value > 0) // Remove empty categories
+    .sort((a, b) => b.value - a.value);
+}
+
+export function getStoresByCategory(
+  categorization: CategorizationResult,
+): { category: string; stores: string[] }[] {
+  const categoryStoreMap = new Map<string, Set<string>>();
+
+  categorization.categories.forEach((category) => {
+    categoryStoreMap.set(category, new Set());
+  });
+
+  categorization.classified.forEach((item) => {
+    const storeSet = categoryStoreMap.get(item.category);
+    if (storeSet && item.name) {
+      storeSet.add(item.name);
+    }
+  });
+
+  return Array.from(categoryStoreMap.entries())
+    .map(([category, storeSet]) => ({
+      category,
+      stores: Array.from(storeSet).sort(),
+    }))
+    .filter((item) => item.stores.length > 0)
+    .sort((a, b) => b.stores.length - a.stores.length);
 }

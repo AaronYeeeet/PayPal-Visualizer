@@ -1,7 +1,7 @@
 import { Mistral } from "@mistralai/mistralai";
 import type { Transaction } from "../App";
 
-const apiKey = "wouldnt you like to know";
+const apiKey = "MGPMFr2gSIQTmoDtcCqeJy9YJB1LVuzw";
 const client = new Mistral({ apiKey });
 
 export async function categorizeTransactions(transactions: Transaction[]) {
@@ -78,13 +78,9 @@ ${formattedList}
     : message;
 
   try {
-    // Entferne Markdown-Code-Blocks (```json ... ``` oder ``` ... ```)
+    // remove possible code block markers like markdown triple backticks
     let cleanedMessage = messageString.trim();
-
-    // Entferne führende ```json oder ```
     cleanedMessage = cleanedMessage.replace(/^```(?:json)?\s*/i, "");
-
-    // Entferne abschließende ```
     cleanedMessage = cleanedMessage.replace(/\s*```\s*$/i, "");
 
     const result = JSON.parse(cleanedMessage);
