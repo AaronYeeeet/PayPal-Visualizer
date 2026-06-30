@@ -41,46 +41,58 @@ const TopRight = ({
 
   return (
     <Grid size={gridSize}>
-      <Stack spacing={2} alignItems="center">
-        <Typography variant="h6">Spenditure per Recepient</Typography>
-        <Stack direction={"row"} justifyContent="center" alignItems="center">
+      <Stack spacing={3} alignItems="center">
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 600,
+            background: "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          Expenditure per Recipient
+        </Typography>
+        <Stack direction={"row"} justifyContent="center" alignItems="center" spacing={2} flexWrap="wrap">
           <FormControlLabel
             control={
               <Switch
                 onChange={() => setExcludeOthers(!excludeOthers)}
                 sx={{
                   "& .MuiSwitch-switchBase": {
-                    color: "#9e9e9e", // Unchecked color
+                    color: "#9e9e9e",
                     "&.Mui-checked": {
-                      color: "#65C466", // Checked color
+                      color: "#6366f1",
                       "& + .MuiSwitch-track": {
-                        backgroundColor: "#65C466",
+                        backgroundColor: "#6366f1",
                       },
                     },
                   },
                 }}
               />
             }
-            label="Exclude Other"
+            label={<Typography variant="body2" sx={{ fontWeight: 500 }}>Exclude Other</Typography>}
           />
           <FormControl
             sx={{
               m: 1,
-              width: "200px",
+              width: "220px",
               marginBottom: "16px",
               "& .MuiOutlinedInput-root": {
-                backgroundColor: "#1e1e1e", // Dark background
+                backgroundColor: "rgba(15, 20, 25, 0.5)",
+                borderRadius: "12px",
                 "& fieldset": {
-                  borderColor: "#333", // Darker outline when not focused
+                  borderColor: "rgba(99, 102, 241, 0.3)",
                 },
                 "&:hover fieldset": {
-                  borderColor: "#555", // Slightly lighter outline on hover
+                  borderColor: "rgba(99, 102, 241, 0.5)",
                 },
                 "&.Mui-focused fieldset": {
-                  borderColor: "mediumpurple",
+                  borderColor: "#6366f1",
                 },
                 "& input": {
-                  color: "white", // Light text color
+                  color: "white",
+                  fontWeight: 500,
                 },
               },
             }}
@@ -99,9 +111,9 @@ const TopRight = ({
                 <InputAdornment
                   position="end"
                   sx={{
-                    color: "white !important",
                     "& .MuiTypography-root": {
-                      color: "lightgrey !important",
+                      color: "rgba(255, 255, 255, 0.8) !important",
+                      fontWeight: 400,
                     },
                   }}
                 >
@@ -111,7 +123,7 @@ const TopRight = ({
               aria-describedby="outlined-weight-helper-text"
               inputProps={{
                 "aria-label": "count of recipients",
-                style: { color: "white" }, // Ensure input text is light
+                style: { color: "white", fontWeight: 500, fontSize: "16px" },
               }}
             />
           </FormControl>
@@ -123,12 +135,12 @@ const TopRight = ({
                 sx={{
                   color: "#9e9e9e",
                   "&.Mui-checked": {
-                    color: "#mediunpurple",
+                    color: "#6366f1",
                   },
                 }}
               />
             }
-            label="Show All"
+            label={<Typography variant="body2" sx={{ fontWeight: 500 }}>Show All</Typography>}
             sx={{ marginLeft: 1 }}
           />
         </Stack>
@@ -137,18 +149,33 @@ const TopRight = ({
           exclusive
           onChange={(_, newType) => newType && setChartType(newType)}
           sx={{
+            gap: 1,
             "& .MuiToggleButton-root": {
               color: "white",
-              borderColor: "#333",
+              borderColor: "rgba(99, 102, 241, 0.3)",
+              borderRadius: "12px",
+              px: 3,
+              py: 1,
+              fontWeight: 500,
+              minWidth: "110px",
               "&.Mui-selected": {
-                backgroundColor: "mediumpurple",
+                backgroundColor: "#6366f1",
                 color: "white",
+                "&:hover": {
+                  backgroundColor: "#4f46e5",
+                },
+              },
+              "&:hover": {
+                backgroundColor: "rgba(99, 102, 241, 0.1)",
+              },
+              "&:not(:first-of-type)": {
+                marginLeft: "8px",
               },
             },
           }}
         >
-          <ToggleButton value="pie">PieChart</ToggleButton>
-          <ToggleButton value="bar">BarChart</ToggleButton>
+          <ToggleButton value="pie">Pie Chart</ToggleButton>
+          <ToggleButton value="bar">Bar Chart</ToggleButton>
         </ToggleButtonGroup>
 
         {chartType === "pie" ? (

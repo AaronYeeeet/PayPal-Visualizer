@@ -26,9 +26,19 @@ const TopLeft = ({ gridSize, filteredData }: TopLeftProps) => {
 
   return (
     <Grid size={gridSize} sx={{ overflow: "visible" }}>
-      <Stack spacing={2} alignItems="center">
-        <Typography variant="h6">Spenditure per Month</Typography>
-        <Stack direction={"row"} spacing={2} alignItems="center">
+      <Stack spacing={3} alignItems="center">
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 600,
+            background: "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          Expenditure per Month
+        </Typography>
+        <Stack direction={"row"} spacing={2} alignItems="center" flexWrap="wrap" justifyContent="center">
           <FormControlLabel
             control={
               <Switch
@@ -38,36 +48,38 @@ const TopLeft = ({ gridSize, filteredData }: TopLeftProps) => {
                   "& .MuiSwitch-switchBase": {
                     color: "#9e9e9e",
                     "&.Mui-checked": {
-                      color: "#65C466",
+                      color: "#6366f1",
                       "& + .MuiSwitch-track": {
-                        backgroundColor: "#65C466",
+                        backgroundColor: "#6366f1",
                       },
                     },
                   },
                 }}
               />
             }
-            label="Show per Recipient"
+            label={<Typography variant="body2" sx={{ fontWeight: 500 }}>Show per Recipient</Typography>}
             sx={{ marginLeft: 1 }}
           />
           <FormControl
             sx={{
               m: 1,
-              width: "200px",
+              width: "220px",
               marginBottom: "16px",
               "& .MuiOutlinedInput-root": {
-                backgroundColor: "#1e1e1e",
+                backgroundColor: "rgba(15, 20, 25, 0.5)",
+                borderRadius: "12px",
                 "& fieldset": {
-                  borderColor: "#333",
+                  borderColor: "rgba(99, 102, 241, 0.3)",
                 },
                 "&:hover fieldset": {
-                  borderColor: "#555",
+                  borderColor: "rgba(99, 102, 241, 0.5)",
                 },
                 "&.Mui-focused fieldset": {
-                  borderColor: "mediumpurple",
+                  borderColor: "#6366f1",
                 },
                 "& input": {
                   color: "white",
+                  fontWeight: 500,
                 },
               },
             }}
@@ -86,9 +98,9 @@ const TopLeft = ({ gridSize, filteredData }: TopLeftProps) => {
                 <InputAdornment
                   position="end"
                   sx={{
-                    color: "white !important",
                     "& .MuiTypography-root": {
-                      color: "lightgrey !important",
+                      color: "rgba(255, 255, 255, 0.8) !important",
+                      fontWeight: 400,
                     },
                   }}
                 >
@@ -98,7 +110,7 @@ const TopLeft = ({ gridSize, filteredData }: TopLeftProps) => {
               aria-describedby="outlined-weight-helper-text"
               inputProps={{
                 "aria-label": "count of recipients",
-                style: { color: "white" },
+                style: { color: "white", fontWeight: 500, fontSize: "16px" },
               }}
             />
           </FormControl>
@@ -111,12 +123,12 @@ const TopLeft = ({ gridSize, filteredData }: TopLeftProps) => {
                 sx={{
                   color: "#9e9e9e",
                   "&.Mui-checked": {
-                    color: "#mediunpurple",
+                    color: "#6366f1",
                   },
                 }}
               />
             }
-            label="Show All"
+            label={<Typography variant="body2" sx={{ fontWeight: 500 }}>Show All</Typography>}
             sx={{ marginLeft: 1 }}
           />
         </Stack>

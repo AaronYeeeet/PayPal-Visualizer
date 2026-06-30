@@ -20,8 +20,16 @@ function MidLeft({ gridSize, filteredData }: MidLeftProps) {
 
   return (
     <Grid size={gridSize} sx={{ overflow: "visible" }}>
-      <Stack spacing={2} alignItems="center">
-        <Typography variant="h6" sx={{ color: "white" }}>
+      <Stack spacing={3} alignItems="center">
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 600,
+            background: "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
           Activity per Weekday
         </Typography>
         <ToggleButtonGroup
@@ -29,18 +37,27 @@ function MidLeft({ gridSize, filteredData }: MidLeftProps) {
           exclusive
           onChange={(_, newType) => newType && setViewMode(newType)}
           sx={{
+            gap: 1,
             "& .MuiToggleButton-root": {
               color: "white",
-              borderColor: "#333",
+              borderColor: "rgba(99, 102, 241, 0.3)",
+              borderRadius: "12px",
+              px: 3,
+              py: 1,
+              fontWeight: 500,
+              minWidth: "100px",
               "&.Mui-selected": {
-                backgroundColor: "mediumpurple",
+                backgroundColor: "#6366f1",
                 color: "white",
                 "&:hover": {
-                  backgroundColor: "mediumpurple",
+                  backgroundColor: "#4f46e5",
                 },
               },
               "&:hover": {
-                backgroundColor: "rgba(147, 112, 219, 0.1)",
+                backgroundColor: "rgba(99, 102, 241, 0.1)",
+              },
+              "&:not(:first-of-type)": {
+                marginLeft: "8px",
               },
             },
           }}

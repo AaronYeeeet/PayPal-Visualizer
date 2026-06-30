@@ -46,15 +46,30 @@ function MonthlySpent({ data }: { data: Transaction[] }) {
           bottom: 5,
         }}
       >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" stroke="lightgrey" />
-        <YAxis stroke="lightgrey" />
-        <Tooltip />
-        <Legend />
+        <defs>
+          <linearGradient id="colorEuro" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="#6366f1" stopOpacity={0.9}/>
+            <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0.7}/>
+          </linearGradient>
+        </defs>
+        <CartesianGrid strokeDasharray="3 3" stroke="rgba(99, 102, 241, 0.2)" />
+        <XAxis dataKey="name" stroke="rgba(255, 255, 255, 0.7)" style={{ fontSize: '14px', fontWeight: 500 }} />
+        <YAxis stroke="rgba(255, 255, 255, 0.7)" style={{ fontSize: '14px', fontWeight: 500 }} />
+        <Tooltip
+          contentStyle={{
+            backgroundColor: 'rgba(30, 41, 59, 0.95)',
+            border: '1px solid rgba(99, 102, 241, 0.3)',
+            borderRadius: '12px',
+            color: 'white',
+          }}
+          cursor={{ fill: 'rgba(99, 102, 241, 0.1)' }}
+        />
+        <Legend wrapperStyle={{ fontSize: '14px', fontWeight: 500 }} />
         <Bar
           dataKey="Euro"
-          fill="#8884d8"
-          activeBar={<Rectangle fill="pink" stroke="blue" />}
+          fill="url(#colorEuro)"
+          radius={[8, 8, 0, 0]}
+          activeBar={<Rectangle fill="#818cf8" stroke="#6366f1" strokeWidth={2} />}
         />
       </BarChart>
     </ResponsiveContainer>
